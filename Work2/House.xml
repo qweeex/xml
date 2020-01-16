@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE Nouse [
+    <!ELEMENT Home (House_No,Name,Description)>
+    <!ELEMENT House_No (#PCDATA)>
+    <!ELEMENT Name (Person)>
+    <!ELEMENT Person (#PCDATA)>
+    <!ELEMENT Description (Text)>
+    <!ELEMENT Text (#PCDATA)>
+]>
+<Nouse>
+    <Home>
+        <House_No>1</House_No>
+        <Name>
+            <Person>Robert</Person>
+            <Person>Gloria</Person>
+            <Person>Susan</Person>
+            <Person>Stephen</Person>
+        </Name>
+        <Description>
+            <Text>Father</Text>
+            <Text>Mother</Text>
+            <Text>Child 1</Text>
+            <Text>Child 2</Text>
+        </Description>
+    </Home>
+    <Home>
+        <House_No>2</House_No>
+        <Name>
+            <Person>John</Person>
+            <Person>Mary</Person>
+            <Person>Joseph</Person>
+        </Name>
+        <Description>
+            <Text>Father</Text>
+            <Text>Mather</Text>
+            <Text>Child 1</Text>
+        </Description>
+    </Home>
+    <Home>
+        <House_No>2</House_No>
+        <Name>
+            <Person>Linda</Person>
+        </Name>
+        <Description>
+            <Text>Individual</Text>
+        </Description>
+    </Home>
+</Nouse>
