@@ -1,0 +1,91 @@
+<!-- Имя файла: GetElements.htm -->
+
+<HTML>
+
+<HEAD>
+
+    <TITLE>Element Finder</TITLE>
+
+    <SCRIPT LANGUAGE="JavaScript">
+        function Init() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "Inventory.xml", true);
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    Load(this);
+                }
+            };
+            xhttp.send();
+
+            function Load(xml) {
+                var xmlDoc = xml.responseXML;
+                let option;
+                let NodeList = xmlDoc;
+                option = NodeList.getElementsByTagName('BOOK');
+                let arr = option[0].children;
+                let html;
+                for (var i = 0; i < arr.length; i++) {
+                    html += '<option value="'+ arr[i].tagName +'">'+ arr[i].tagName +'</option>';
+                }
+                document.querySelector('#ElementName').innerHTML = html;
+            }
+        }
+        Init();
+        function ShowElements()
+        {
+            /* проверка ввода пользователем названия элемента в поле
+               'Element name': */
+            if (ElementName.value == "")
+            {
+                ResultDiv.innerText = "<You must enter an element "
+                    + "name into 'Element name' box.>";
+                return;
+            }
+
+            /* создание списка элементов NodeList с именами, аналогичными
+               введенному: */
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "Inventory.xml", true);
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    myFunction(this);
+                }
+            };
+            xhttp.send();
+
+            function myFunction(xml) {
+                var xmlDoc = xml.responseXML;
+
+                NodeList =
+                    xmlDoc.getElementsByTagName(ElementName.value);
+                /* запись XML указателя для каждого найденного элемента
+                   в ResultHTML: */
+                ResultHTML = "";
+                for (i=0; i < NodeList.length; ++i)
+                    ResultHTML += NodeList[i].childNodes[0].nodeValue + "\n\n";
+
+                /* назначение сохраненных результатов в свойстве innerText
+                   элемента DIV: */
+                if (ResultHTML == "")
+                    ResultDiv.innerText = "<no matching elements found>";
+                else
+                    ResultDiv.innerText = ResultHTML;
+            }
+        }
+    </SCRIPT>
+
+</HEAD>
+
+<BODY>
+
+<H2>Find Elements by Element Name</H2>
+Element name: 
+<select ID="ElementName">
+</select>&nbsp
+<BUTTON ONCLICK="ShowElements()">Show Elements</BUTTON>
+<HR>
+<DIV ID=ResultDiv></DIV>
+
+</BODY>
+
+</HTML>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "InventoryAttribute.xml", true);
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                GetBook(this);
+            }
+        };
+        xhttp.send();
+
+        function Load(xml) {
+            let arr = xml.responseXML.getElementsByTagName('BOOK')[0];
+            let alerts = '';
+            let attr = arr.attributes;
+            console.log(arr.attributes);
+            for (let i = 0; i < attr.length; i++){
+                alerts += attr[i].name + ' : ' + attr[i].value + ', ';
+            }
+            alerts += 'AUTHOR: ' + arr.getElementsByTagName('AUTHOR')[0].textContent;
+            alert(alerts);
+        }
+
+        function GetBook(xml) {
+            let arr = xml.responseXML.getElementsByTagName('BOOK');
+            for (let i = 0; i < arr.length; i++) {
+                let alerts = '';
+                let attr = arr[i].attributes;
+                for (let t = 0; t < attr.length; t++){
+                    alerts += attr[t].name + ' : ' + attr[t].value + ', ';
+                }
+                alerts += 'AUTHOR: ' + arr[i].getElementsByTagName('AUTHOR')[0].textContent;
+                alert(alerts);
+            }
+        }
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>
