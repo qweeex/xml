@@ -1,18 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Xml;
 
-namespace ConsoleApplication1
+namespace XmlEdidor
 {
     class Program
     {
-        
+        static string GetFile()
+        {
+            string document = "doc.xml";
+            return document;
+        }
+        // Init script
         static void Main(string[] args)
         {
             XmlDocument doc = new XmlDocument();
-            doc.Load("Inventory.xml");
+            doc.Load(GetFile());
             while (true)
             {
                 int i = ShowMenu(doc);
@@ -21,35 +24,43 @@ namespace ConsoleApplication1
         }
         static int ShowMenu(XmlDocument doc)
         {
-            Console.WriteLine("1: Просмотр содержимого");
-            Console.WriteLine("2: Добавление содержимого");
-            Console.WriteLine("3: Изменение содержимого");
-            Console.WriteLine("4: Удаление содержимого");
-            Console.WriteLine("0: Выход");
+            Console.WriteLine("\n 1: Просмотр содержимого \n 2: Добавление содержимого \n 3: Изменение содержимого \n 4: Удаление содержимого \n 0: Выход");
             Console.Write("Введите ваш выбор:");
             string str = Console.ReadLine();
             switch (str)
             {
                 case "0": return 0; break;
-                case "1": ShowBooks(doc); return 1;  break;
+                case "1": ShowBook(doc); return 1; break;
                 case "2": AddBook(doc); return 1; break;
                 case "3": ChangeBook(doc); return 1; break;
                 case "4": DeleteBook(doc); return 1; break;
                 default: Console.WriteLine("Введите одну из указанных цифр"); return 1; break;
             }
         }
-        static void ShowBooks(XmlDocument doc)
+        static void ShowBook(XmlDocument doc)
         {
             XmlNodeList list = doc.GetElementsByTagName("BOOK");
             int num = 1;
+            string Head = String.Format("|{0,2}    |{1,40}     |{2,40}     |{3,30}     |{4,20}     |{5,10}", "ID", "Название", "Автор", "Обложка", "Кол-во страниц", "Цена");
+            for (int i = 0; i < Head.Length; i++)
+            {
+                Console.Write("-");
+            }
+            Console.WriteLine();
+            Console.WriteLine(Head);
+            for (int i = 0; i < Head.Length; i++)
+            {
+                Console.Write("-");
+            }
+            Console.WriteLine();
             foreach (XmlNode node in list)
             {
-                Console.WriteLine(num++);
-                Console.WriteLine("Название: {0}", node.ChildNodes[0].InnerText);
-                Console.WriteLine("Автор: {0}", node.ChildNodes[1].InnerText);
-                Console.WriteLine("Обложка: {0}", node.ChildNodes[2].InnerText);
-                Console.WriteLine("Кол-во страниц: {0}", node.ChildNodes[3].InnerText);
-                Console.WriteLine("Цена: {0}", node.ChildNodes[4].InnerText);
+                string table = String.Format("|{0,2}    |{1,40}     |{2,40}     |{3,30}     |{4,20}     |{5,10}", num++, node.ChildNodes[0].InnerText, node.ChildNodes[1].InnerText, node.ChildNodes[2].InnerText, node.ChildNodes[3].InnerText, node.ChildNodes[4].InnerText);
+                Console.WriteLine(table);
+                for (int i = 0; i < table.Length; i++)
+                {
+                    Console.Write("-");
+                }
                 Console.WriteLine();
             }
         }
@@ -77,7 +88,7 @@ namespace ConsoleApplication1
             price.InnerText = Console.ReadLine();
             book.InsertAfter(price, book.LastChild);
             doc.DocumentElement.InsertAfter(book, doc.DocumentElement.LastChild);
-            doc.Save("Inventory.xml");
+            doc.Save(GetFile());
         }
         static void ChangeBook(XmlDocument doc)
         {
@@ -88,13 +99,21 @@ namespace ConsoleApplication1
             Console.WriteLine("Введите новое значение");
             string str = Console.ReadLine();
             doc.DocumentElement.ChildNodes[num - 1].ChildNodes[c - 1].InnerText = str;
-            doc.Save("Inventory.xml");
+            doc.Save(GetFile());
         }
         static void DeleteBook(XmlDocument doc)
         {
             Console.WriteLine("Введите номер удаляемой книги");
             int num = Convert.ToInt32(Console.ReadLine());
-            doc.DocumentElement.RemoveChild(doc.DocumentElement.ChildNodes[num - 1]);
+            if (num < 0)
+            {
+                Console.WriteLine("Данного номера книги нет, попробуйте снова");
+            }
+            else
+            {
+                doc.DocumentElement.RemoveChild(doc.DocumentElement.ChildNodes[num - 1]);
+            }
         }
+
     }
 }
